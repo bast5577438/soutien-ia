@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Un espace pour souffler
 
-## Getting Started
+Un espace de discussion avec une IA, pensé pour les coups de stress — pas pour remplacer un suivi professionnel, mais pour offrir une écoute immédiate, bienveillante, et sans jugement.
 
-First, run the development server:
+**Démo en ligne : [soutien-ia.vercel.app](https://soutien-ia.vercel.app)**
+
+## Pourquoi
+
+Un proche traverse parfois un coup de stress au moment où personne n'est disponible pour en parler. Ce projet propose une interface de chat simple, accessible par un lien, où l'on peut écrire ce qu'on ressent et recevoir une réponse empathique en quelques secondes.
+
+## Ce qui est fait
+
+- **Chat en streaming** avec un modèle Gemini, via une route API Next.js
+- **Garde-fous de sécurité** : le prompt système oriente vers des ressources professionnelles (3114, SAMU, SOS Amitié) en cas de détresse sévère évoquée, sans jamais remplacer un avis médical
+- **Aucune persistance serveur** : les conversations restent en mémoire du navigateur, jamais stockées côté backend
+- **Interface sombre et apaisante** : fond qui "respire" (halos animés en boucle douce), verre dépoli, dégradés discrets
+- **Ambiance sonore lofi générative** : un moteur audio synthétisé en temps réel (Web Audio API) — groove de batterie swingué, accords façon Rhodes, vibrato de bande, souffle et crépitements de vinyle. Comme rien n'est un fichier audio en boucle, le son ne se répète jamais à l'identique
+
+## Stack technique
+
+- [Next.js 16](https://nextjs.org) (App Router) + TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [`@google/genai`](https://www.npmjs.com/package/@google/genai) pour les réponses du modèle Gemini
+- Web Audio API pure (aucune dépendance audio externe) pour l'ambiance sonore
+- Déployé sur [Vercel](https://vercel.com)
+
+## Lancer le projet en local
 
 ```bash
+npm install
+cp .env.local.example .env.local   # puis ajouter votre clé GEMINI_API_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La clé Gemini est gratuite, sans carte bancaire, via [Google AI Studio](https://aistudio.google.com).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  api/chat/route.ts   # route API qui appelle Gemini en streaming
+  page.tsx             # interface de chat
+lib/
+  systemPrompt.ts       # prompt système (ton, garde-fous de sécurité)
+  useAmbientSound.ts     # moteur audio génératif (lofi)
+```
 
-## Learn More
+## Avertissement
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Cet outil ne remplace pas un professionnel de santé. En cas de danger immédiat, contactez le **3114** (numéro national de prévention du suicide, gratuit, 24h/24) ou le **15** (SAMU).
